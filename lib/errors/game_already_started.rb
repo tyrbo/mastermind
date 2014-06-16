@@ -1,0 +1,2 @@
+class GameAlreadyStarted < StandardError
+end
