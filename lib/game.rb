@@ -13,7 +13,7 @@ class Game
 
   def start
     raise GameAlreadyStarted if @sequence
-    @sequence = SequenceGenerator.random
+    @sequence = SequenceGenerator.new.random
   end
 
   def guess(guess)

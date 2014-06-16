@@ -1,8 +1,23 @@
 require './lib/sequence'
 
 class SequenceGenerator
-  def self.random
-    options = ['R', 'G', 'B', 'Y']
-    Sequence.new(options.sample(4))
+  attr_reader :options
+
+  def initialize
+    @options = ['R', 'G', 'B', 'Y']
+    @arr = []
+  end
+
+  def random
+    Sequence.new(populate)
+  end
+
+  private
+
+  def populate
+    while @arr.length < 4
+      @arr << options[rand(options.length)]
+    end
+    @arr
   end
 end
