@@ -20,8 +20,8 @@ class Game
     raise GameNotStarted if !@sequence
     if GuessValidator.valid?(guess)
       guess = Guess.new(guess)
-      SequenceMatcher.match?(guess, @sequence)
       @guesses << guess
+      SequenceMatcher.new(guess, @sequence).match?
     end
   end
 end

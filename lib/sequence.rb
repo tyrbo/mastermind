@@ -8,4 +8,16 @@ class Sequence
   def ==(other)
     secret_sequence == other.secret_sequence
   end
+
+  def include?(other)
+    @secret_sequence.include?(other)
+  end
+
+  def [](idx)
+    @secret_sequence[idx]
+  end
+
+  def count
+    @secret_sequence.count
+  end
 end
