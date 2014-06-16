@@ -20,4 +20,8 @@ class Sequence
   def count
     @secret_sequence.count
   end
+
+  def to_s
+    @secret_sequence.join('')
+  end
 end

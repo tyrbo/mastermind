@@ -8,31 +8,36 @@ class SequenceMatcherTest < MiniTest::Test
     @sequence ||= Sequence.new(['A', 'B', 'C', 'D'])
   end
 
-  def test_for_a_valid_match
+  def duplicate_sequence
+    @duplicate_sequence ||= Sequence.new(['A', 'B', 'A', 'A'])
+  end
+
+  def test_has_a_character
     guess1 = Guess.new('ABCD')
-    result = SequenceMatcher.new(guess1, sequence).match?
-    assert_equal 4, result[:matches]
-    assert_equal 4, result[:positions]
-    assert result[:full_match]
+    assert SequenceMatcher.new(guess1, sequence).include?('A')
   end
 
-  def test_for_a_partial_match
-    result = SequenceMatcher.new(Guess.new('ACBA'), sequence).match?
-    assert_equal 3, result[:matches]
-    assert_equal 1, result[:positions]
-    refute result[:full_match]
+  def test_has_multiple_characters
+    guess1 = Guess.new('AAAA')
+    sequence = SequenceMatcher.new(guess1, duplicate_sequence)
+
+    assert sequence.include?('A')
+    assert sequence.include?('A')
+    assert sequence.include?('A')
   end
 
-  def test_multiple_repeats_dont_break_things
-    result = SequenceMatcher.new(Guess.new('ABAB'), Sequence.new(['A', 'A', 'A', 'A'])).match?
-    assert_equal 2, result[:matches]
-    assert_equal 2, result[:positions]
+  def test_has_no_character
+    guess1 = Guess.new('ABCD')
+    refute SequenceMatcher.new(guess1, sequence).include?('Z')
   end
 
-  def test_for_no_matches
-    result = SequenceMatcher.new(Guess.new('ZZZZ'), sequence).match?
-    assert_equal 0, result[:matches]
-    assert_equal 0, result[:positions]
-    refute result[:full_match]
+  def test_has_a_position
+    guess1 = Guess.new('ABCD')
+    assert SequenceMatcher.new(guess1, sequence).position?('B', 1)
+  end
+
+  def test_has_no_position
+    guess1 = Guess.new('ABCD')
+    refute SequenceMatcher.new(guess1, sequence).position?('F', 1)
   end
 end
