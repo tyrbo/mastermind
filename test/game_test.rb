@@ -13,12 +13,7 @@ class GameTest < MiniTest::Test
     g.guess('RGBY')
     assert_equal 1, g.guesses.count
   end
-
-  def test_cant_guess_if_game_isnt_started
-    g = Game.new
-    assert_raises(GameNotStarted) { g.guess('RGBY') }
-  end
-
+  
   def test_only_valid_guesses_are_added
     g = Game.new
     g.start
@@ -28,6 +23,11 @@ class GameTest < MiniTest::Test
 
     g.guess('RRRR')
     assert_equal 1, g.guesses.count
+  end
+
+  def test_cant_guess_if_game_isnt_started
+    g = Game.new
+    assert_raises(GameNotStarted) { g.guess('RGBY') }
   end
 
   def test_starting_a_game_should_generate_a_new_sequence

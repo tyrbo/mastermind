@@ -1,11 +1,19 @@
 class GamePrinter
-  def self.output_guess(hash)
+  def self.output_guess(hash, guesses)
     sequence = hash[:sequence]
     guess = hash[:guess]
     if hash[:full_match]
-      "Congratulations! You guessed the sequence '#{sequence.to_s}'."
+      "Congratulations! You guessed the sequence '#{sequence.to_s}' in #{pluralize(guesses)}."
     else
-      "'#{guess.to_s}' has #{hash[:matches]} of the correct elements with #{hash[:positions]} in the correct position."
+      "'#{guess.to_s}' has #{hash[:matches]} of the correct elements with #{hash[:positions]} in the correct position.\nYou've taken #{pluralize(guesses)}."
+    end
+  end
+
+  def self.pluralize(guesses)
+    if guesses > 1
+      "#{guesses} guesses"
+    else
+      "#{guesses} guess"
     end
   end
 end

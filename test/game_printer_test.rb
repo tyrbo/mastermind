@@ -25,18 +25,18 @@ class GamePrinterTest < MiniTest::Test
   end
 
   def correct_match
-    "Congratulations! You guessed the sequence 'ABCD'."
+    "Congratulations! You guessed the sequence 'ABCD' in 4 guesses."
   end
 
   def incorrect_match
-    "'ACBD' has 4 of the correct elements with 2 in the correct position."
+    "'ACBD' has 4 of the correct elements with 2 in the correct position.\nYou've taken 1 guess."
   end
 
   def test_output_guess_with_full_match
-    assert_equal correct_match, GamePrinter.output_guess(correct_hash)
+    assert_equal correct_match, GamePrinter.output_guess(correct_hash, 4)
   end
 
   def test_output_guess_with_incorrect_match
-    assert_equal incorrect_match, GamePrinter.output_guess(incorrect_hash)
+    assert_equal incorrect_match, GamePrinter.output_guess(incorrect_hash, 1)
   end
 end

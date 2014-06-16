@@ -14,7 +14,7 @@ class SequenceMatcher
       @matches += 1 if include?(char)
       @positions += 1 if position?(char, idx)
     end
-    GamePrinter.output_guess(match_hash)
+    match_hash
   end
 
   def include?(char)

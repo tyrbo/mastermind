@@ -19,9 +19,16 @@ class Game
   def guess(guess)
     raise GameNotStarted if !@sequence
     if GuessValidator.valid?(guess)
-      guess = Guess.new(guess)
-      @guesses << guess
-      SequenceMatcher.new(guess, @sequence).match?
+      process_guess(guess)
     end
+  end
+
+  private
+
+  def process_guess(guess)
+    guess = Guess.new(guess)
+    @guesses << guess
+    result = SequenceMatcher.new(guess, @sequence).match?
+    GamePrinter.output_guess(result, guesses.count)
   end
 end
