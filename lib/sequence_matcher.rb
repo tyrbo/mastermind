@@ -29,7 +29,8 @@ class SequenceMatcher
   end
 
   def match_hash
-    full_match = (@matches == sequence.count) && (@positions == sequence.count)
+    count = sequence.count
+    full_match = (@matches == count) && (@positions == count)
     { matches: @matches, positions: @positions, full_match: full_match, sequence: sequence, guess: @guess }
   end
 
