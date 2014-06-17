@@ -2,14 +2,9 @@ require './lib/game'
 
 class REPL
   def run
-    game = Game.new
-    game.start
-    still_playing = true
+    running = true
 
-    while still_playing
-      print '> '
-      input = gets.strip
-      puts game.guess(input)
+    while running
     end
   end
 end

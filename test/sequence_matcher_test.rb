@@ -18,12 +18,13 @@ class SequenceMatcherTest < MiniTest::Test
   end
 
   def test_has_multiple_characters
-    guess1 = Guess.new('AAAA')
+    guess1 = Guess.new('AAAB')
     sequence = SequenceMatcher.new(guess1, duplicate_sequence)
 
     assert sequence.include?('A')
     assert sequence.include?('A')
     assert sequence.include?('A')
+    refute sequence.include?('A')
   end
 
   def test_has_no_character
