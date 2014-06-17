@@ -15,9 +15,10 @@ class SequenceGenerator
   private
 
   def populate
-    while @arr.length < 4
-      @arr << options[rand(options.length)]
-    end
-    @arr
+   (0...4).collect { @options.sample }
+   # while @arr.length < 4
+   #   @arr << options[rand(options.length)]
+   # end
+   # @arr
   end
 end
