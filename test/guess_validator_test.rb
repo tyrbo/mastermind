@@ -16,4 +16,10 @@ class GuessValidatorTest < MiniTest::Test
     refute GuessValidator.valid?(nil)
     refute GuessValidator.valid?(0.1)
   end
+  
+  def test_it_must_have_four_characters
+    assert GuessValidator.valid?('RGBY')
+    refute GuessValidator.valid?('RGB')
+    refute GuessValidator.valid?('RGBYY')
+  end
 end
