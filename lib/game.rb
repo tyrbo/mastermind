@@ -21,7 +21,7 @@ class Game
     if GuessValidator.valid?(guess)
       process_guess(guess)
     else
-      puts 'You must enter a valid guess.'
+      'You must enter a valid guess.'
     end
   end
 

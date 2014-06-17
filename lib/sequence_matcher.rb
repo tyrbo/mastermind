@@ -19,7 +19,7 @@ class SequenceMatcher
 
   def include?(char)
     if temp_sequence.include?(char)
-      temp_sequence.delete_at(temp_sequence.find_index(char))
+      #temp_sequence.delete_at(temp_sequence.find_index(char))
       true
     end
   end
