@@ -1,7 +1,7 @@
 require './lib/game_printer'
 
 class SequenceMatcher
-  attr_reader :guess, :sequence
+  attr_reader :guess, :sequence, :matches
 
   def initialize(guess, sequence)
     @guess = guess

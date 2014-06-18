@@ -12,6 +12,13 @@ class SequenceMatcherTest < MiniTest::Test
     @duplicate_sequence ||= Sequence.new(['A', 'B', 'A', 'A'])
   end
 
+  def test_has_correct_match_amount
+    guess = Guess.new('AAAA')
+    sequence = SequenceMatcher.new(guess, Sequence.new(['A', 'B', 'C', 'D']))
+    sequence.match?
+    assert 1, sequence.matches
+  end
+
   def test_has_a_character
     guess1 = Guess.new('ABCD')
     assert SequenceMatcher.new(guess1, sequence).include?('A')
