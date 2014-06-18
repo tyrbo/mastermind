@@ -30,7 +30,6 @@ class Game
   def process_guess(guess)
     guess = Guess.new(guess)
     @guesses << guess
-    result = SequenceMatcher.new(guess, @sequence).match?
-    GamePrinter.output_guess(result, guesses.count)
+    SequenceMatcher.new(guess, @sequence).match?
   end
 end

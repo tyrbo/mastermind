@@ -3,7 +3,7 @@ require './lib/game'
 
 class IntegrationTest < MiniTest::Test
   def correct?(result)
-    result =~ /^Congratulations!/
+    result[:full_match]
   end
 
   def wrong_guess

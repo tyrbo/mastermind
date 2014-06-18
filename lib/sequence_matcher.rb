@@ -1,5 +1,3 @@
-require './lib/game_printer'
-
 class SequenceMatcher
   attr_reader :guess, :sequence, :matches
 
