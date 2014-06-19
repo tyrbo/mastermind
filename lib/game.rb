@@ -9,15 +9,17 @@ class Game
 
   def initialize
     @guesses = []
-  end
-
-  def start
-    raise GameAlreadyStarted if @sequence
+    @started = false
     @sequence = SequenceGenerator.new.random
   end
 
+  def start
+    raise GameAlreadyStarted if @started
+    @started = true
+  end
+
   def guess(guess)
-    raise GameNotStarted if !@sequence
+    raise GameNotStarted unless @started
     if GuessValidator.valid?(guess)
       process_guess(guess)
     else
@@ -29,7 +31,8 @@ class Game
 
   def process_guess(guess)
     guess = Guess.new(guess)
-    @guesses << guess
-    SequenceMatcher.new(guess, @sequence).match?
+    match_data = SequenceMatcher.new(guess, @sequence).match?
+    @guesses << match_data
+    match_data
   end
 end

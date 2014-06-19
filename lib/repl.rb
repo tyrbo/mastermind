@@ -2,7 +2,7 @@ require './lib/game'
 require 'dispel'
 
 class REPL
-  attr_reader :running, :playing, :game
+  attr_reader :running, :playing, :game, :start_time
 
   def initialize
     @running = false
@@ -70,9 +70,10 @@ class REPL
   end
 
   def play
+    @playing = true
     @game = Game.new
     game.start
-    @playing = true
+    @start_time = Time.now
   end
 
   def guess(args)
@@ -97,6 +98,7 @@ class REPL
 
   def handle_win(result)
     puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count)}."
+    puts "You finished in #{calculate_time}."
     quit
   end
 
@@ -104,12 +106,19 @@ class REPL
     puts "Your guess '#{result[:guess]}' contains #{result[:matches]} correct elements in #{result[:positions]} correct positions."
   end
 
-  def pluralize(number)
+  def pluralize(number, plurals = ['guess', 'guesses'])
     if number == 1
-      "#{number} guess"
+      "#{number} #{plurals.first}"
     else
-      "#{number} guesses"
+      "#{number} #{plurals.last}"
     end
+  end
+
+  def calculate_time
+    difference = Time.now - @start_time
+    minutes = (difference / 60.0).round
+    seconds = (difference % 60).round
+    "#{pluralize(minutes, ['minute', 'minutes'])}, #{pluralize(seconds, ['second', 'seconds'])}"
   end
 
   def quit
