@@ -97,8 +97,7 @@ class REPL
   end
 
   def handle_win(result)
-    puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count)}."
-    puts "You finished in #{calculate_time}."
+    puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count)} over #{calculate_time}."
     quit
   end
 
