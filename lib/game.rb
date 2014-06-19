@@ -23,7 +23,7 @@ class Game
     if GuessValidator.valid?(guess)
       process_guess(guess)
     else
-      'You must enter a valid guess.'
+      'You must enter a valid guess: four characters long, consisting of (R)ed, (G)reen, (B)lue, or (Y)ellow.'
     end
   end
 

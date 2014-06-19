@@ -1,5 +1,4 @@
 require './lib/game'
-require 'dispel'
 
 class REPL
   attr_reader :running, :playing, :game, :start_time
@@ -72,8 +71,10 @@ class REPL
   def play
     @playing = true
     @game = Game.new
-    game.start
     @start_time = Time.now
+    game.start
+    puts "I've generated a sequence. Let's play!"
+    print_commands
   end
 
   def guess(args)
