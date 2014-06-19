@@ -1,5 +1,7 @@
+require './lib/pluralizer'
+
 class TimeTracker
-  attr_accessor :difference
+  attr_accessor :difference, :start_time, :stop_time
 
   def initialize
     @start_time = 0
@@ -16,8 +18,17 @@ class TimeTracker
   end
 
   def difference_in_words 
-    minutes = (difference / 60.0).round
-    seconds = (difference % 60).round
-    "#{Pluralizer.pluralize(minutes, 'minute')}, #{Pluralizer.pluralize(seconds, 'second')}"
+    minutes = (difference / 60.0).floor
+    seconds = (difference % 60).floor
+    time_in_words_string(minutes, seconds)
+  end
+
+  private
+
+  def time_in_words_string(minutes, seconds)
+    arr = []
+    arr << Pluralizer.pluralize(minutes, 'minute') if minutes > 0
+    arr << Pluralizer.pluralize(seconds, 'second')
+    arr.join(', ')
   end
 end

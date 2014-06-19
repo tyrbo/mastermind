@@ -1,3 +1,5 @@
+require 'json'
+
 class GameScores
   def self.save(result, name, time)
     File.open('scores.json', 'a') do |f|
@@ -27,8 +29,7 @@ class GameScores
     scores.map { |score|
       JSON.parse(score)
     }.sort_by { |score| score['time'].to_f }
-  rescue
-    puts 'Uh oh! The scores.json file contains a malformed entry.'
+  rescue JSON::ParserError
     nil
   end
 end
