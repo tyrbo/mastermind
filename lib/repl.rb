@@ -2,6 +2,7 @@ require './lib/game'
 require './lib/repl_printer'
 require './lib/time_tracker'
 require './lib/game_scores'
+require './lib/command'
 require 'json'
 
 class REPL
@@ -38,24 +39,25 @@ class REPL
   end
 
   def process(command, args)
-    if      command == 'q' then quit
-    elsif   command == 'c' then printer.print_commands
-    elsif   command == 'i' then printer.print_instructions
+    command = Command.new(command)
+    if      command.is_quit          then quit
+    elsif   command.is_commands      then printer.commands
+    elsif   command.is_instructions  then printer.instructions
     elsif !playing
-      if    command == 'p' then play
+      if    command.is_play          then play
       end
     elsif playing
-      if    command == 'g' then guess(args)
-      elsif command == 'h' then printer.history(game.guesses)
+      if    command.is_guess         then guess(args)
+      elsif command.is_history       then printer.history(game.guesses)
       end
     end
   end
-  
+
   def play
     init_game
     printer.commands
   end
-  
+
   def init_game
     @playing = true
     @last_result = nil
@@ -63,11 +65,11 @@ class REPL
     time_tracker.start
     game.start
   end
-  
+
   def time_tracker
     @time_tracker ||= TimeTracker.new
   end
-  
+
   def guess(args)
     @last_result = game.guess(args)
     check_guess_hash
