@@ -103,6 +103,7 @@ class REPL
 
   def handle_guess(result)
     puts "Your guess '#{result[:guess]}' contains #{result[:matches]} correct elements in #{result[:positions]} correct positions."
+    puts "You've taken #{pluralize(game.guesses.count)}."
   end
 
   def pluralize(number, plurals = ['guess', 'guesses'])
@@ -123,6 +124,7 @@ class REPL
   def quit
     if playing
       puts 'Thank you for playing Mastermind.'
+      puts 'Would you like to (p)lay again?'
       @playing = false
     else
       @running = false
