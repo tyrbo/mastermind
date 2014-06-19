@@ -1,12 +1,14 @@
 require './lib/game'
+require 'json'
 
 class REPL
-  attr_reader :running, :playing, :game, :start_time
+  attr_reader :running, :playing, :game, :start_time, :time
 
   def initialize
     @running = false
     @playing = false
     @game = nil
+    @time = nil
   end
 
   def run
@@ -98,8 +100,48 @@ class REPL
   end
 
   def handle_win(result)
+    @time = Time.now - start_time
     puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count)} over #{calculate_time}."
+    save_record(result)
+    print_records
     quit
+  end
+
+  def save_record(result)
+    print 'Enter your name to save score: '
+    name = gets.strip
+    if !name.empty?
+      File.open('scores.json', 'a') do |f|
+        f.puts victory_hash(result, name).to_json
+      end
+    end
+  end
+
+  def print_records
+    if File.file?('scores.json')
+      scores = sort_scores(File.readlines('scores.json'))[0...10]
+      puts '=== TOP 10 ==='
+      scores.each_with_index do |score, index|
+        handle_score(score, index)
+      end
+    end
+  end
+
+  def sort_scores(scores)
+    scores.map { |score|
+      JSON.parse(score)
+    }.sort_by { |score| score['time'].to_i }
+  rescue
+    puts 'Uh oh! The scores.json file contains a malformed entry.'
+  end
+
+  def handle_score(score, index)
+    calculated_time = calculate_time(score['time'])
+    puts "#{index + 1}. #{score['name']} correctly guessed '#{score['sequence']}' in #{calculate_time(score['time'])}."
+  end
+
+  def victory_hash(result, name)
+    { name: name, sequence: result[:sequence].to_s, time: time }
   end
 
   def handle_guess(result)
@@ -115,10 +157,9 @@ class REPL
     end
   end
 
-  def calculate_time
-    difference = Time.now - @start_time
-    minutes = (difference / 60.0).round
-    seconds = (difference % 60).round
+  def calculate_time(time_in_seconds = time)
+    minutes = (time_in_seconds / 60.0).round
+    seconds = (time_in_seconds % 60).round
     "#{pluralize(minutes, ['minute', 'minutes'])}, #{pluralize(seconds, ['second', 'seconds'])}"
   end
 
