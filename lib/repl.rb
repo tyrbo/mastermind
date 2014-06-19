@@ -28,7 +28,7 @@ class REPL
 
   def print_commands
     if playing
-      puts 'You may (g)uess the sequence, read the (i)nstructions, reprint the list of (c)ommands, or (q)uit.'
+      puts 'You may (g)uess the sequence, view your guessing (h)istory, read the (i)nstructions, reprint the list of (c)ommands, or (q)uit.'
     else
       puts 'You may (p)lay the game, read the (i)nstructions, reprint the list of (c)ommands, or (q)uit.'
     end
@@ -58,15 +58,22 @@ class REPL
   end
 
   def process(command, args)
-    if    command == 'q' then quit
-    elsif command == 'c' then print_commands
-    elsif command == 'i' then print_instructions
+    if      command == 'q' then quit
+    elsif   command == 'c' then print_commands
+    elsif   command == 'i' then print_instructions
     elsif !playing
-      if command == 'p' then play
+      if    command == 'p' then play
       end
     elsif playing
-      if command == 'g' then guess(args)
+      if    command == 'g' then guess(args)
+      elsif command == 'h' then history
       end
+    end
+  end
+
+  def history
+    game.guesses.each_with_index do |guess, index|
+      puts "#{index + 1}. #{guess[:guess]}, #{guess[:matches]} matches and #{guess[:positions]} positions."
     end
   end
 
@@ -101,7 +108,7 @@ class REPL
 
   def handle_win(result)
     @time = Time.now - start_time
-    puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count)} over #{calculate_time}."
+    puts "Congratulations, you guessed the sequence '#{result[:sequence]}' in #{pluralize(game.guesses.count, 'guess', 'guesses')} over #{calculate_time}."
     save_record(result)
     print_records
     quit
@@ -120,10 +127,11 @@ class REPL
   def print_records
     if File.file?('scores.json')
       scores = sort_scores(File.readlines('scores.json'))[0...10]
-      puts '=== TOP 10 ==='
+      puts '', '=== TOP 10 ==='
       scores.each_with_index do |score, index|
         handle_score(score, index)
       end
+      puts
     end
   end
 
@@ -146,21 +154,23 @@ class REPL
 
   def handle_guess(result)
     puts "Your guess '#{result[:guess]}' contains #{result[:matches]} correct elements in #{result[:positions]} correct positions."
-    puts "You've taken #{pluralize(game.guesses.count)}."
+    puts "You've taken #{pluralize(game.guesses.count, 'guess', 'guesses')}."
   end
 
-  def pluralize(number, plurals = ['guess', 'guesses'])
+  def pluralize(number, singular, plural = nil)
     if number == 1
-      "#{number} #{plurals.first}"
+      "#{number} #{singular}"
+    elsif plural
+      "#{number} #{plural}"
     else
-      "#{number} #{plurals.last}"
+      "#{number} #{singular}s"
     end
   end
 
   def calculate_time(time_in_seconds = time)
     minutes = (time_in_seconds / 60.0).round
     seconds = (time_in_seconds % 60).round
-    "#{pluralize(minutes, ['minute', 'minutes'])}, #{pluralize(seconds, ['second', 'seconds'])}"
+    "#{pluralize(minutes, 'minute')}, #{pluralize(seconds, 'second')}"
   end
 
   def quit
