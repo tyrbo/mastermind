@@ -33,7 +33,7 @@ class REPLPrinter
   end
 
   def guess_hint(result, guesses)
-    puts "Your guess '#{last_result[:guess]}' contains #{last_result[:matches]} correct elements in #{last_result[:positions]} correct positions."
+    puts "Your guess '#{result[:guess]}' contains #{result[:matches]} correct elements in #{result[:positions]} correct positions."
     puts "You've taken #{Pluralizer.pluralize(guesses, 'guess', 'guesses')}."
   end
 
