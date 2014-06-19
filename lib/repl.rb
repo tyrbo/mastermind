@@ -1,5 +1,6 @@
 require './lib/game'
 require 'json'
+require 'rainbow/ext/string'
 
 class REPL
   attr_reader :running, :playing, :game, :start_time, :time
@@ -23,14 +24,15 @@ class REPL
   private
 
   def print_intro
+    ascii
     puts 'Welcome to Mastermind CLI.'
   end
 
   def print_commands
     if playing
-      puts 'You may (g)uess the sequence, view your guessing (h)istory, read the (i)nstructions, reprint the list of (c)ommands, or (q)uit.'
+      puts 'You may (g)uess the sequence, view your guessing (h)istory, read the (i)nstructions, reprint this list of (c)ommands, or (q)uit.'
     else
-      puts 'You may (p)lay the game, read the (i)nstructions, reprint the list of (c)ommands, or (q)uit.'
+      puts 'You may (p)lay the game, read the (i)nstructions, reprint this list of (c)ommands, or (q)uit.'
     end
   end
 
@@ -122,6 +124,16 @@ class REPL
         f.puts victory_hash(result, name).to_json
       end
     end
+  end
+
+  def ascii
+    puts
+    puts (' __  __           _                      _           _').color(:red)
+    puts ('|  \/  | __ _ ___| |_ ___ _ __ _ __ ___ (_)_ __   __| |').color(:yellow)
+    puts ('| |\/| |/ _` / __| __/ _ \ \'__| \'_ ` _ \| | \'_ \ / _` |').color(:green)
+    puts ('| |  | | (_| \__ \ ||  __/ |  | | | | | | | | | | (_| |').color(:blue)
+    puts ('|_|  |_|\__,_|___/\__\___|_|  |_| |_| |_|_|_| |_|\__,_|').color(:magenta)
+    puts
   end
 
   def print_records
